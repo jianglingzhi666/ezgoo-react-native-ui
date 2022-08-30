@@ -10,8 +10,8 @@ import {
   ViewStyle,
   ColorValue,
 } from 'react-native';
-import {addElement, deletElement} from '../TopView';
-import {screenHeight, isIOS} from '../../utils/phoneInfo';
+import { addElement, deletElement, replaceElement } from '../TopView';
+import { screenHeight, isIOS } from '../../utils/phoneInfo';
 export interface ModalProps {
   visible?: boolean;
   animationType?: 'none' | 'slide' | 'fade' | undefined;
@@ -71,7 +71,12 @@ export class Modal extends React.Component<ModalProps, any> {
       } else {
         this.close();
       }
+    } else {
+      if (this.id) {
+        replaceElement(this.id, this.renderModal())
+      }
     }
+
   }
   //显示
   open = (callback?: () => void) => {
@@ -145,7 +150,7 @@ export class Modal extends React.Component<ModalProps, any> {
   };
 
   renderModal = () => {
-    const {position} = this.props;
+    const { position } = this.props;
 
     return (
       <View
@@ -161,7 +166,7 @@ export class Modal extends React.Component<ModalProps, any> {
         }}>
         {this.props.onRequestClose ? (
           <TouchableWithoutFeedback onPress={this.props.onRequestClose}>
-            <View style={{flex: 1}} />
+            <View style={{ flex: 1 }} />
           </TouchableWithoutFeedback>
         ) : null}
         <Animated.View
@@ -176,14 +181,14 @@ export class Modal extends React.Component<ModalProps, any> {
                 position === 'bottom'
                   ? 'flex-end'
                   : position === 'center'
-                  ? 'center'
-                  : 'flex-start',
+                    ? 'center'
+                    : 'flex-start',
               opacity:
                 this.props.animationType === 'fade' ? this.state.animation : 1,
               top: this.props.animationType === 'slide' ? screenHeight : 0,
               transform:
                 this.props.animationType === 'slide'
-                  ? [{translateY: this.state.animation}]
+                  ? [{ translateY: this.state.animation }]
                   : undefined,
             },
             this.props.style,

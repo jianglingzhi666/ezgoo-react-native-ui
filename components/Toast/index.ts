@@ -1,9 +1,9 @@
 import React from 'react';
 import * as ReactTestRenderer from 'react-test-renderer';
-import {POSITION, Modal} from '../Modal';
+import { POSITION, Modal } from '../Modal';
 import ToastComponent from './Toast';
-import {ToastProps} from './Toast';
-import {deletElement} from '../TopView';
+import { ToastProps } from './Toast';
+import { deletElement } from '../TopView';
 
 let toast_array: Array<{
   instance: ReactTestRenderer.ReactTestRenderer;
@@ -60,10 +60,10 @@ export function Toast(
  */
 export function closeToast(id: number) {
   let index = toast_array.findIndex(item => item.id === id);
-  if (index !== undefined) {
+  if (index !== -1) {
     toast_array[index].instance.getInstance()?.close(() => {
       toast_array[index].instance.unmount();
-      toast_array.splice(index, 0);
+      toast_array.splice(index, 1);
     });
   }
 }
