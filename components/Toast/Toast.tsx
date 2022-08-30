@@ -14,6 +14,7 @@ export default class Toast extends React.Component<ToastProps, any> {
         style={[
           {
             minWidth: 120,
+            maxWidth: 260,
             paddingHorizontal: 28,
             paddingVertical: 24,
             borderRadius: 5,
@@ -26,7 +27,12 @@ export default class Toast extends React.Component<ToastProps, any> {
         {this.props.icon}
         <Text
           style={[
-            {color: 'white', fontSize: 13, marginTop: this.props.icon ? 18 : 0},
+            {
+              color: 'white',
+              fontSize: 13,
+              marginTop: this.props.icon ? 18 : 0,
+              textAlign: 'center',
+            },
             this.props.bodyTextStyle,
           ]}>
           {this.props.bodyText}

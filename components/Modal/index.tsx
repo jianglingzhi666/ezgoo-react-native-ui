@@ -148,10 +148,22 @@ export class Modal extends React.Component<ModalProps, any> {
     const {position} = this.props;
 
     return (
-      <View style={{flex: 1, backgroundColor: this.props.backgroundColor}}>
-        <TouchableWithoutFeedback onPress={this.props.onRequestClose}>
-          <View style={{flex: 1}} />
-        </TouchableWithoutFeedback>
+      <View
+        pointerEvents="box-none"
+        style={{
+          flex: 1,
+          backgroundColor: this.props.backgroundColor,
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+        }}>
+        {this.props.onRequestClose ? (
+          <TouchableWithoutFeedback onPress={this.props.onRequestClose}>
+            <View style={{flex: 1}} />
+          </TouchableWithoutFeedback>
+        ) : null}
         <Animated.View
           pointerEvents="box-none"
           style={[

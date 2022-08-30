@@ -24,12 +24,12 @@ export function deletElement(id: number) {
   if (index === undefined) {
     return false;
   } else {
-    modal_array_proxy?.splice(index, 1);
+    modal_array_proxy?.splice(index, 0);
     return true;
   }
 }
 
-export default function TopView(Component: any) {
+export function TopView(Component: any) {
   return class extends React.Component<any, any> {
     constructor(props: any) {
       super(props);
