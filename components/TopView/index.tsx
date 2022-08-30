@@ -12,8 +12,8 @@ let count = 0;
 
 //添加modal层
 export function addElement(element: React.ReactElement) {
-  modal_array_proxy?.push({component: element, id: count});
   count++;
+  modal_array_proxy?.push({component: element, id: count});
   return count;
 }
 
@@ -21,7 +21,7 @@ export function addElement(element: React.ReactElement) {
 export function deletElement(id: number) {
   //获取对应modal下标
   let index = modal_array_proxy?.findIndex(item => item.id === id);
-  if (index === undefined) {
+  if (index === undefined||index === -1) {
     return false;
   } else {
     modal_array_proxy?.splice(index, 0);
@@ -74,8 +74,8 @@ export function TopView(Component: any) {
               zIndex: TOP_INDEX,
             }}
             pointerEvents="box-none">
-            {modal_array_proxy?.map(item => {
-              return React.cloneElement(item.component, {key: item.id});
+            {modal_array_proxy?.map((item,index) => {
+              return React.cloneElement(item.component, {key: index});
             })}
           </View>
         </View>

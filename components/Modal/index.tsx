@@ -13,7 +13,7 @@ import {
 import {addElement, deletElement} from '../TopView';
 import {screenHeight, isIOS} from '../../utils/phoneInfo';
 export interface ModalProps {
-  visible: boolean;
+  visible?: boolean;
   animationType?: 'none' | 'slide' | 'fade' | undefined;
   children?: React.ReactNode;
   position?: POSITION;
