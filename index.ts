@@ -13,3 +13,5 @@ export * from './components/Modal';
 export * from './components/Toast';
 
 export * from './utils/phoneInfo';
+
+export * from './components/TopView';
