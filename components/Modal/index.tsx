@@ -1,156 +1,141 @@
-import React from 'react';
-import {
-  View,
-  Animated,
-  Easing,
-  TouchableWithoutFeedback,
-  BackHandler,
-  NativeEventSubscription,
-  StyleProp,
-  ViewStyle,
-  ColorValue,
-} from 'react-native';
-import { addElement, deletElement, replaceElement } from '../TopView';
-import { screenHeight, isIOS } from '../../utils/phoneInfo';
+import React from 'react'
+import { View, Animated, Easing, TouchableWithoutFeedback, BackHandler, NativeEventSubscription, StyleProp, ViewStyle, ColorValue } from 'react-native'
+import { addElement, deletElement, replaceElement } from '../TopView'
+import { screenHeight, isIOS } from '../../utils/phoneInfo'
 export interface ModalProps {
-  visible?: boolean;
-  animationType?: 'none' | 'slide' | 'fade' | undefined;
-  children?: React.ReactNode;
-  position?: POSITION;
-  onRequestClose?: () => void;
-  style?: StyleProp<ViewStyle> | undefined;
-  backgroundColor?: ColorValue | undefined;
+  visible?: boolean
+  animationType?: 'none' | 'slide' | 'fade' | undefined
+  children?: React.ReactNode
+  position?: POSITION | 'top' | 'center' | 'bottom'
+  onRequestClose?: () => void
+  style?: StyleProp<ViewStyle> | undefined
+  backgroundColor?: ColorValue | undefined
 }
 export enum POSITION {
   TOP = 'top',
   CENTER = 'center',
-  BOTTOM = 'bottom',
+  BOTTOM = 'bottom'
 }
 
 export class Modal extends React.Component<ModalProps, any> {
   static defaultProps = {
-    backgroundColor: 'rgba(0,0,0,0.4)',
-  };
-  id: undefined | number;
-  backHandler: NativeEventSubscription | undefined;
+    backgroundColor: 'rgba(0,0,0,0.4)'
+  }
+  id: undefined | number
+  backHandler: NativeEventSubscription | undefined
   constructor(props: any) {
-    super(props);
+    super(props)
     this.state = {
-      animation: new Animated.Value(0),
-    };
+      animation: new Animated.Value(0)
+    }
   }
   componentDidMount() {
     if (!isIOS) {
-      this.backHandler = BackHandler.addEventListener(
-        'hardwareBackPress',
-        () => {
-          if (this.props.onRequestClose && this.props.visible) {
-            this.props.onRequestClose && this.props.onRequestClose();
-            return true;
-          } else {
-            return false;
-          }
-        },
-      );
+      this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+        if (this.props.onRequestClose && this.props.visible) {
+          this.props.onRequestClose && this.props.onRequestClose()
+          return true
+        }
+        return false
+      })
     }
     if (this.props.visible) {
-      this.open();
+      this.open()
     }
   }
   componentWillUnmount() {
     if (this.id !== undefined) {
-      deletElement(this.id as number);
-      this.id = undefined;
+      deletElement(this.id as number)
+      this.id = undefined
     }
-    this.backHandler && this.backHandler.remove();
+    this.backHandler && this.backHandler.remove()
   }
   componentDidUpdate(prevProps: ModalProps) {
     if (prevProps.visible !== this.props.visible) {
       if (this.props.visible) {
-        this.open();
+        this.open()
       } else {
-        this.close();
+        this.close()
       }
     } else {
       if (this.id) {
         replaceElement(this.id, this.renderModal())
       }
     }
-
   }
   //显示
   open = (callback?: () => void) => {
-    this.id = addElement(this.renderModal());
+    this.id = addElement(this.renderModal())
     if (this.props.animationType === 'fade') {
-      this.fadeEnter(this.state.animation, callback);
+      this.fadeEnter(this.state.animation, callback)
     } else if (this.props.animationType === 'slide') {
-      this.slideEnter(this.state.animation, callback);
+      this.slideEnter(this.state.animation, callback)
     }
-  };
+  }
   close = (callback?: () => void) => {
     //关闭modal
     if (this.id !== undefined) {
       const closeModal = () => {
-        deletElement(this.id as number);
-        this.id = undefined;
-        callback && callback();
-      };
+        deletElement(this.id as number)
+        this.id = undefined
+        callback && callback()
+      }
       if (this.props.animationType === 'fade') {
-        this.fadeOut(this.state.animation, closeModal);
+        this.fadeOut(this.state.animation, closeModal)
       } else if (this.props.animationType === 'slide') {
-        this.slideOut(this.state.animation, closeModal);
+        this.slideOut(this.state.animation, closeModal)
       } else {
-        closeModal();
+        closeModal()
       }
     }
-  };
+  }
   //淡入动画
   fadeEnter = (animation: Animated.AnimatedValue, callback?: () => void) => {
     Animated.timing(animation, {
       toValue: 1,
       easing: Easing.linear,
       useNativeDriver: true,
-      duration: 200,
+      duration: 200
     }).start(() => {
-      callback && callback();
-    });
-  };
+      callback && callback()
+    })
+  }
   //淡出动画
   fadeOut = (animation: Animated.AnimatedValue, callback?: () => void) => {
     Animated.timing(animation, {
       toValue: 0,
       easing: Easing.linear,
       useNativeDriver: true,
-      duration: 200,
+      duration: 200
     }).start(() => {
-      callback && callback();
-    });
-  };
+      callback && callback()
+    })
+  }
   //滑入
   slideEnter = (animation: Animated.AnimatedValue, callback?: () => void) => {
     Animated.timing(animation, {
       toValue: -screenHeight,
       easing: Easing.linear,
       useNativeDriver: true,
-      duration: 300,
+      duration: 300
     }).start(() => {
-      callback && callback();
-    });
-  };
+      callback && callback()
+    })
+  }
   //滑入
   slideOut = (animation: Animated.AnimatedValue, callback?: () => void) => {
     Animated.timing(animation, {
       toValue: 0,
       easing: Easing.linear,
       useNativeDriver: true,
-      duration: 300,
+      duration: 300
     }).start(() => {
-      callback && callback();
-    });
-  };
+      callback && callback()
+    })
+  }
 
   renderModal = () => {
-    const { position } = this.props;
+    const { position } = this.props
 
     return (
       <View
@@ -162,7 +147,7 @@ export class Modal extends React.Component<ModalProps, any> {
           top: 0,
           left: 0,
           right: 0,
-          bottom: 0,
+          bottom: 0
         }}>
         {this.props.onRequestClose ? (
           <TouchableWithoutFeedback onPress={this.props.onRequestClose}>
@@ -177,29 +162,20 @@ export class Modal extends React.Component<ModalProps, any> {
               width: '100%',
               height: screenHeight,
               position: 'absolute',
-              justifyContent:
-                position === 'bottom'
-                  ? 'flex-end'
-                  : position === 'center'
-                    ? 'center'
-                    : 'flex-start',
-              opacity:
-                this.props.animationType === 'fade' ? this.state.animation : 1,
+              justifyContent: position === 'bottom' ? 'flex-end' : position === 'center' ? 'center' : 'flex-start',
+              opacity: this.props.animationType === 'fade' ? this.state.animation : 1,
               top: this.props.animationType === 'slide' ? screenHeight : 0,
-              transform:
-                this.props.animationType === 'slide'
-                  ? [{ translateY: this.state.animation }]
-                  : undefined,
+              transform: this.props.animationType === 'slide' ? [{ translateY: this.state.animation }] : undefined
             },
-            this.props.style,
+            this.props.style
           ]}>
           {this.props.children}
         </Animated.View>
       </View>
-    );
-  };
+    )
+  }
 
   render() {
-    return null;
+    return null
   }
 }
