@@ -1,6 +1,6 @@
 {
   "name": "ezgoo-react-native-ui",
-  "version": "1.1.2",
+  "version": "1.1.4",
   "description": "",
   "main": "index.ts",
   "scripts": {
@@ -11,6 +11,7 @@
   "license": "",
   "peerDependencies": {
     "react-native": "^0.41.2",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "moment": "^2.29.2"
   }
 }
