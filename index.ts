@@ -11,3 +11,5 @@ export * from './components/TopView'
 export * from './components/Picker'
 
 export * from './components/AddressPicker'
+
+export * from './components/Switch'

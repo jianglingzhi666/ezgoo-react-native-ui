@@ -301,6 +301,7 @@ class AddressPickerModal extends React.Component<AddressPickerProps, AddressPick
             </View>
           ) : null}
           <SectionList
+            bounces={false}
             ref={this.sectionListRef}
             stickySectionHeadersEnabled={true}
             ListHeaderComponent={() => {
